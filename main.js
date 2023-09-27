@@ -36,6 +36,7 @@ const json = {
                 "historia":"era uma vez um menino...",
                 "matematica": ["funções","artimetica","geometria"],
                 "geografia": {
+                    "id":"id geografia",
                     "planos":"artigo referente a planos de...",
                     "solos":"varios tipos de lato solos..."
                 }
@@ -44,7 +45,7 @@ const json = {
     }
 }
 
-const searchKey = ["id"]
+const searchKey = ["show confirmacao"]
 const result = {}
 let count = 0
 
