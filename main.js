@@ -28,7 +28,8 @@ const json = {
             "id":555
         },
         "escolaridade":{
-            "escola":"manoel gomes",
+            "escola_teste_beta":"manoel gomes",
+            "escola_ruivo_beta":"manoel gomes",
             "ano":"2023",
             "livros":{
                 "id": 667,
@@ -45,33 +46,63 @@ const json = {
     }
 }
 
-const searchKey = ["show confirmacao"]
-const result = {}
-let count = 0
-
-function scanJson(json, targetArray, resultObject) {
-    if (typeof json !== "object") return "Tipo de estrutura não é json"
-
-    for (let key in json) {
-        if (typeof json[key] === "object") {
-            scanJson(json[key], targetArray, resultObject)
-        }
-
-        let dataExists = targetArray.filter(k => k === key)[0] ? targetArray.filter(k => k === key)[0] : false
-
-        if (dataExists) {
-            if(resultObject.hasOwnProperty(key)) {
-                resultObject[targetArray.filter(k => k === key)[0] + `_${count++}`] = json[key]
-            } else {
-                resultObject[targetArray.filter(k => k === key)[0]] = json[key]
+const jsonHandler = {
+    res: {},
+    scanJson(json, targetArray, resultObject) {
+        if (typeof json !== "object") return "Tipo de estrutura não é json"
+    
+        for (let key in json) {
+            if (typeof json[key] === "object") {
+                this.scanJson(json[key], targetArray, resultObject)
+            }
+    
+            let dataExists = targetArray.filter(k => k === key)[0] ? targetArray.filter(k => k === key)[0] : false
+    
+            if (dataExists) {
+                if(resultObject.hasOwnProperty(key)) {
+                    resultObject[targetArray.filter(k => k === key)[0] + `_${count++}`] = json[key]
+                } else {
+                    resultObject[targetArray.filter(k => k === key)[0]] = json[key]
+                }
             }
         }
-    }
+    
+        return resultObject
+    },
 
-    return resultObject
+    filterAdvancedJson (jsonData, resultData, search) {
+        for(let key in jsonData) {
+            if(typeof jsonData[key] === "object") {
+                if(key.includes(search)) {
+                    this.res[key] = jsonData[key]
+                } else {
+                    this.filterAdvancedJson(jsonData[key],this.res, search)
+                }
+            } else {
+                if(key.includes(search)) {
+                    this.res[key] = jsonData[key]
+                }
+            }
+        }
+    
+        return this.res
+    }
 }
 
-const resultJson = scanJson(json, searchKey, result)
+const scanKey = ["numero","foto_perfil4"]
+const filterKey = "escola_"
+const result = {}
+let count = 0
+let type = "scan"
 
-console.log(resultJson)
-
+switch(type) {
+    case "filter":
+        console.log(jsonHandler.filterAdvancedJson(json, result, filterKey))
+        break;
+    case "scan":
+        console.log(jsonHandler.scanJson(json, scanKey, result))
+        break;
+    default:
+        console.log(jsonHandler.scanJson(json, scanKey, result))
+        break;
+}
