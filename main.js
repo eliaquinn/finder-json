@@ -27,9 +27,24 @@ const json = {
             "uf":"am",
             "id":555
         },
-        "escolaridade":{
-            "escola_teste_beta":"manoel gomes",
-            "escola_ruivo_beta":"manoel gomes",
+        "escolas":{
+            "todas_unidades": [
+                {
+                    "escola":"fulano 1"
+                },
+                {
+                    "escola":"fulano 2"
+                },
+                {
+                    "escola":"fulano 3"
+                },
+                {
+                    "escola":"fulano 4"
+                },
+                {
+                    "escola":"fulano 5"
+                },
+            ],
             "ano":"2023",
             "livros":{
                 "id": 667,
@@ -80,6 +95,9 @@ const jsonHandler = {
                 }
             } else {
                 if(key.includes(search)) {
+                    if(this.res.hasOwnProperty(search)) {
+                        this.res[key + `_${count++}`] = jsonData[key]
+                    }
                     this.res[key] = jsonData[key]
                 }
             }
@@ -90,10 +108,10 @@ const jsonHandler = {
 }
 
 const scanKey = ["numero","foto_perfil4"]
-const filterKey = "escola_"
+const filterKey = "escola"
 const result = {}
 let count = 0
-let type = "scan"
+let type = "filter"
 
 switch(type) {
     case "filter":
