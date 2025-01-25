@@ -8,7 +8,7 @@ module.exports = {
     filename: 'finder-json.bundle.js',
     library: 'fjson',
     libraryTarget: 'umd',
-    globalOject: 'this',
+    globalObject: 'this',
   },
   module: {
     rules: [],
